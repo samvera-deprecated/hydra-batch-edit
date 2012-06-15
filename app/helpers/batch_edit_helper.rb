@@ -13,17 +13,17 @@ module BatchEditHelper
 
   # Displays the batch edit tools.  Put this in your search result page template.  We recommend putting it in catalog/_sort_and_per_page.html.erb
   def batch_edit_tools
-    render :partial=>'/batch_edit/tools'
+    render :partial=>'/batch_edits/tools'
   end
   
   # Displays the button that users click when they are done selecting items for a batch.  Put this in your search result page template.  We put it in catalog/index.html
   def batch_edit_continue 
-    render :partial => '/batch_edit/next_page' 
+    render :partial => '/batch_edits/next_page' 
   end
 
   # Displays the button to select/deselect items for your batch.  Call this in the index partial that's rendered for each search result.
   # @param [Hash] document the Hash (aka Solr hit) for one Solr document
   def batch_edit_select(document)
-    render :partial=>'/batch_edit/add_button', :locals=>{:document=>document}
+    render :partial=>'/batch_edits/add_button', :locals=>{:document=>document}
   end
 end

@@ -7,7 +7,8 @@ $ ->
           css_class: "batch_toggle"
       })
 
-  $("[data-behavior='batch-edit-activate']").click ->
+  $("[data-behavior='batch-edit-activate']").click (e) ->
+    e.preventDefault()
     if $(this).attr("data-state") == 'off'
       $(this).attr("data-state", 'on')
       $(this).find('a i').addClass('icon-ok')

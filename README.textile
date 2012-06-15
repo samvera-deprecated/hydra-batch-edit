@@ -27,15 +27,25 @@ h2. Installing
 
 In your Gemfile, add
 
-<pre>gem hydra-batch-edit</pre> 
+<pre>gem 'hydra-batch-edit'</pre> 
 
 # Call batch_edit_tools view helper in your search result page template.  We recommend putting it in catalog/_sort_and_per_page.html.erb
 # Call batch_edit_continue in the search result page template.  We put it in catalog/index.html
 # Call batch_edit_select(document) [passing in the solr document] on the index partial that's rendered for each search result
 # Add routes to config/routes.rb 
 <pre>
-  mount Hydra::BatchEdit::Engine => '/batch'
+  Hydra::BatchEdit.add_routes(self)
 </pre>
+# Add javascript to app/assets/javascripts/application.js
+<pre>
+  //= require batch_edit
+</pre>
+# Add css to app/assets/stylesheets/application.css
+<pre>
+  *= require batch_edit
+</pre>
+  
+
 
 
 h2. Dependencies

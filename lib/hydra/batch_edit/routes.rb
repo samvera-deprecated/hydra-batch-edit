@@ -10,7 +10,6 @@ module Hydra
 
       def draw
         add_routes do |options|
-          match 'batch_edits/:id' => 'batch_edits#add', :via=>:put
           resources :batch_edits, :only=>[:index] do
             member do
               delete :destroy
@@ -19,8 +18,10 @@ module Hydra
               get :edit
               put :update
               delete :clear
+              put :state
             end
           end
+          match 'batch_edits/:id' => 'batch_edits#add', :via=>:put
         end
       end
 

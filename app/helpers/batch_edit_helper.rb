@@ -7,8 +7,8 @@ module BatchEditHelper
   end
 
   # Returns true if user has activated batch edit mode in session
-  def batch_edit_active?
-    session[:batch_edit_state] == 'on'
+  def batch_edit_state
+    session[:batch_edit_state] ||= 'off'
   end
 
   # Displays the batch edit tools.  Put this in your search result page template.  We recommend putting it in catalog/_sort_and_per_page.html.erb

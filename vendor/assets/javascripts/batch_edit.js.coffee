@@ -7,17 +7,39 @@ $ ->
           css_class: "batch_toggle"
       })
 
-  $("[data-behavior='batch-edit-activate']").click (e) ->
-    e.preventDefault()
-    if $(this).attr("data-state") == 'off'
-      $(this).attr("data-state", 'on')
-      $(this).find('a i').addClass('icon-ok')
+  setState = (obj) ->
+    activate = ->
+      obj.find('a i').addClass('icon-ok')
       $("[data-behavior='batch-edit']").removeClass('hidden')
       $("[data-behavior='batch-add-button']").removeClass('hidden')
-    else
-      $(this).attr("data-state", 'off')
-      $(this).find('a i').removeClass('icon-ok')
+
+    deactivate = ->
+      obj.find('a i').removeClass('icon-ok')
       $("[data-behavior='batch-edit']").addClass('hidden')
       $("[data-behavior='batch-add-button']").addClass('hidden')
+
+    if obj.attr("data-state") == 'off'
+      deactivate(obj)
+    else
+      activate(obj)
+
+  toggleState = (obj) ->
+    if obj.attr('data-state') == 'off'
+      obj.attr("data-state", 'on')
+    else
+      obj.attr("data-state", 'off')
+    setState(obj)
+
+  #set initial state
+  setState($("[data-behavior='batch-edit-activate']"))
+
+  $("[data-behavior='batch-edit-activate']").click (e) ->
+    e.preventDefault()
+    toggleState($(this))
+    $.ajax({
+      type: 'POST',
+      url: '/batch_edits/state',
+      data: {_method:'PUT', state: $(this).attr('data-state')},
+    });
     # TODO check-all
 

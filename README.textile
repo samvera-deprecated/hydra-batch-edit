@@ -6,18 +6,22 @@ Batch Editing Functionality for Hydra Heads
 
 As far as we can tell, the code is sufficiently "test-coveraged" and html/javascript is "fall-backable".
 
+The initial code for this gem was written by MediaShelf on behalf of Northwestern University.  It is used in the NWU Digital Image Library (DIL) Hydra Head.
+
 h2. Features
 
-The main thrust of the re-usable functionality we aim to provide:
+The main thrust of the re-usable functionality this gem aims to provide:
 
 # Jackie User constructs a batch of objects from Blacklight/Hydra search results
-# When Jackie has selected everything for the batch, she proceeds to the next step
-# (might want to have a sanity check page here where Jackie sees all of the objects she has selected.  We skipped that step for now)
-# Before displaying the next step, a controller before_filter makes sure Jackie has edit permissions for each of the objects
+# When Jackie has selected everything for the batch, she clicks a button to proceed to the next step
+# (Might want to have a sanity check page here where Jackie sees all of the objects she has selected.  We skipped that step for now.)
+# Before displaying the next step, a before_filter in the controller makes sure Jackie has edit permissions for each of the objects, filtering out the non-editable content and notifying Jackie that they've been removed from her batch
 # Jackie sees a form for specifying what changes to apply to the batch
 # Jackie submits her changes and they are applied to each of the objects in the batch
+# Before applying the submitted updates, the before_filter in the controller checks (again) that Jackie has edit permissions for everything in the batch
+# The BatchUpdatesController#update method applies Jackie's changes to each of the objects in the batch
 
-The batches are tracked in user session as a list of pids.  They are not persisted.
+*Note* The batches are tracked as a list of pids _in the user session__.  They are not persisted.
 
 h2. Installing
 

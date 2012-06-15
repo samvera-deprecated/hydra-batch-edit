@@ -1,0 +1,94 @@
+h1. hydra-batch-edit
+
+Batch Editing Functionality for Hydra Heads
+
+*This is Alpha Software!*  While working on a specific Hydra Head with specific content & use cases, we added batch editing functionality.  We wrote the code as a separate gem so that others can use this as a starting point, but _you will have to modify the code_ to get this to work.  If other Hydra partners start using the gem, it will become more immediately useful & configurable out of the box.  At that point, someone will delete this message.
+
+As far as we can tell, the code is sufficiently "test-coveraged" and html/javascript is "fall-backable".
+
+h2. Features
+
+The main thrust of the re-usable functionality we aim to provide:
+
+# Jackie User constructs a batch of objects from Blacklight/Hydra search results
+# When Jackie has selected everything for the batch, she proceeds to the next step
+# (might want to have a sanity check page here where Jackie sees all of the objects she has selected.  We skipped that step for now)
+# Before displaying the next step, a controller before_filter makes sure Jackie has edit permissions for each of the objects
+# Jackie sees a form for specifying what changes to apply to the batch
+# Jackie submits her changes and they are applied to each of the objects in the batch
+
+The batches are tracked in user session as a list of pids.  They are not persisted.
+
+h2. Installing
+
+In your Gemfile, add
+
+<pre>gem hydra-batch-edit</pre> 
+
+# Call batch_update_tools view helper in your search result page template.  We recommend putting it in catalog/_sort_and_per_page.html.erb
+# Call batch_upate_continue in the search result page template.  We put it in catalog/index.html
+# Call batch_update_select(document) [passing in the solr document] on the index partial that's rendered for each search result
+# Add routes for BatchUpdatesController _this is a placeholder, we haven't figured it out yet._
+
+h2. Dependencies
+
+hydra-head
+bootstrap
+blacklight.js
+coffeescript & scss
+
+  
+h2. Customizing
+
+*This is Alpha Software* These instructions assume that you know how to work with rails and are familiar with Hydra
+
+You will *definitely* need to override the edit form.
+You will need to set BatchUpdatesController.type -- currently only allows updating _one_ type of content
+You will probably need to override BatchUpdatesController#update 
+You might need to override BatchUpdatesController#edit
+
+Extend Hydra::BatchUpdatesController update and/or edit methods
+
+For example
+app/controllers/batch_updates_controller.rb
+<pre>
+  class BatchUpdatesController < ApplicationController
+    include Hydra::BatchUpdatesBehavior
+    self.type = :multiresimage # this tells the controller where to look for update info in the posted params
+    def update
+      batch.each do |doc_id|
+        obj = ActiveFedora::Base.find(doc_id, :cast=>true)
+        obj.update_attributes(params[self.class.type])
+        obj.do_something_special
+        obj.save
+      end
+      flash[:notice] = "Batch update complete"
+      session[:batch_document_ids] = []
+      redirect_to catalog_index_path
+    end
+  end
+</pre>
+
+Override Edit View
+
+app/views/batch_updates/edit.html.erb
+<pre>
+  <%= form_for MyModel.new, :url=>batch_updates_path, :method=>:put do |f| %>
+
+    <%= f.label :title, "Title:"  %>
+    <%= f.text_field :title %>
+
+    <%= f.label :description, "Description:"  %>
+    <%= f.text_field :description %>
+
+    <%= f.label :license, "License:"  %>
+    <%= f.text_field :license %>
+    
+    <%= f.label :access_policy, "Access Policy:"  %>
+    <%= f.select :access_policy, ... %>
+
+    <%= f.submit "Save changes", :class=>'btn btn-primary'%>
+
+  <% end %>
+</pre>
+

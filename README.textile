@@ -6,7 +6,7 @@ Batch Editing Functionality for Hydra Heads
 
 As far as we can tell, the code is sufficiently "test-coveraged" and html/javascript is "fall-backable".
 
-The initial code for this gem was written by MediaShelf on behalf of Northwestern University.  It is used in the NWU Digital Image Library (DIL) Hydra Head.
+The initial code for this gem was written by "MediaShelf":http://yourmediashelf.com on behalf of Northwestern University.  It is used in the NWU Digital Image Library (DIL) Hydra Head.
 
 h2. Features
 

@@ -1,19 +1,16 @@
 module BatchUpdatesBehavior
   
-  cattr_accessor :type
-  self.type = :multiresimage
-
   before_filter :filter_docs_with_access!, :only=>[:edit, :update]
   before_filter :check_for_empty!, :only=>[:edit, :update]
 
   
   # fetch the documents that match the ids in the folder
   def index
-    @response, @documents = get_solr_response_for_field_values("id",session[:batch_document_ids] || [])
+    @response, @documents = get_solr_response_for_field_values("id", batch)
   end
 
   def state
-    session[:batch_update_state] = params[:state]
+    session[:batch_edit_state] = params[:state]
     render :json => {"OK" => "OK"}
   end
 
@@ -24,7 +21,7 @@ module BatchUpdatesBehavior
       format.html do
         redirect_to :back, :notice =>  "#{params[:title] || "Item"} successfully added to batch"
       end
-      format.js { render :json => session[:batch_document_ids] }
+      format.js { render :json => batch }
     end
   end
  
@@ -44,10 +41,10 @@ module BatchUpdatesBehavior
  
   # get rid of the items in the batch
   def clear
-    session[:batch_document_ids] = []
+    clear_batch!
     respond_to do |format|
       format.html { redirect_to :back, :notice=> "Batch has been cleared" }
-      format.js { render :json => session[:batch_document_ids] }
+      format.js { render :json => batch }
     end
   end
 
@@ -57,11 +54,12 @@ module BatchUpdatesBehavior
   def update
     batch.each do |doc_id|
       obj = ActiveFedora::Base.find(doc_id, :cast=>true)
-      obj.update_attributes(params[self.class.type])
+      type = obj.class.to_s.underscore.to_sym
+      obj.update_attributes(params[type])
       obj.save
     end
     flash[:notice] = "Batch update complete"
-    session[:batch_document_ids] = []
+    clear_batch!
     redirect_to catalog_index_path
     
   end
@@ -70,6 +68,10 @@ module BatchUpdatesBehavior
 
   def batch
     session[:batch_document_ids] ||= []
+  end
+
+  def clear_batch!
+    session[:batch_document_ids] = []
   end
 
   def check_for_empty!

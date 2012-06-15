@@ -53,7 +53,6 @@ h2. Customizing
 h3. What you will need to do
 
 You will *definitely* need to override the edit form.
-You will need to set BatchEditController.type -- currently only allows updating _one_ type of content
 You will probably need to override BatchEditController#update 
 You might need to override BatchEditController#edit
 
@@ -64,11 +63,11 @@ Example app/controllers/batch_updates_controller.rb
 <pre>
   class BatchEditController < ApplicationController
     include Hydra::BatchEditBehavior
-    self.type = :multiresimage # this tells the controller where to look for update info in the posted params
     def update
       batch.each do |doc_id|
         obj = ActiveFedora::Base.find(doc_id, :cast=>true)
-        obj.update_attributes(params[self.class.type])
+        type = obj.class.to_s.underscore.to_sym
+        obj.update_attributes(params[type])
         obj.do_something_special
         obj.save
       end

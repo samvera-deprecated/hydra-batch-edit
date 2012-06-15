@@ -1,0 +1,26 @@
+<%= form_for Multiresimage.new, :url=>batch_updates_path, :method=>:put do |f| %>
+
+  <div class="control-group">
+    <%= f.label :titleSet_display, "Title:"  %>
+    <div class="controls">
+      <%= f.text_field :titleSet_display %>
+    </div>
+  </div>
+  <div class="control-group">
+    <%= f.label :agentSet_display, "Agent:"  %>
+    <div class="controls">
+      <%= f.text_field :agentSet_display %>
+    </div>
+  </div>
+  <div class="control-group">
+    <%= f.label :dateSet_display, "Date:"  %>
+    <div class="controls">
+      <%= f.text_field :dateSet_display %>
+    </div>
+  </div>
+
+  <div class="form-actions">
+    <%= f.submit "Save changes", :class=>'btn btn-primary'%>
+  </div>
+
+<% end %>

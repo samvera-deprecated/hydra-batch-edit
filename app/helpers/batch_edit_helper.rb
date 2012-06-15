@@ -5,18 +5,18 @@ module BatchEditHelper
   end
 
   def batch_edit_active?
-    session[:batch_update_state] == 'on'
+    session[:batch_edit_state] == 'on'
   end
 
   def batch_edit_tools
-    render :partial=>'/batch_updates/tools'
+    render :partial=>'/batch_edit/tools'
   end
 
   def batch_edit_continue 
-    render :partial => '/batch_updates/next_page' 
+    render :partial => '/batch_edit/next_page' 
   end
 
   def batch_edit_select(document)
-    render :partial=>'/batch_updates/add_button', :locals=>{:document=>document}
+    render :partial=>'/batch_edit/add_button', :locals=>{:document=>document}
   end
 end

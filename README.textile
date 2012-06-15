@@ -6,7 +6,7 @@ Batch Editing Functionality for Hydra Heads
 
 As far as we can tell, the code is sufficiently "test-coveraged" and html/javascript is "fall-backable".
 
-The initial code for this gem was written by "MediaShelf":http://yourmediashelf.com on behalf of Northwestern University.  It is used in the NWU Digital Image Library (DIL) Hydra Head.
+The initial code for this gem was written by "MediaShelf":http://yourmediashelf.com on behalf of Northwestern University.  It is used in the NWU Digital Image Library (DIL) Hydra Head.  As with all Hydra code, this software is distributed under the "Apache 2 License":http://www.apache.org/licenses/LICENSE-2.0.
 
 h2. Features
 
@@ -21,7 +21,7 @@ The main thrust of the re-usable functionality this gem aims to provide:
 # Before applying the submitted updates, the before_filter in the controller checks (again) that Jackie has edit permissions for everything in the batch
 # The BatchUpdatesController#update method applies Jackie's changes to each of the objects in the batch
 
-*Note* The batches are tracked as a list of pids _in the user session__.  They are not persisted.
+*Note* The batches are tracked as a list of pids _in the user session_.  They are not persisted.
 
 h2. Installing
 

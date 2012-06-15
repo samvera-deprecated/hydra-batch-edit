@@ -46,15 +46,17 @@ h2. Customizing
 
 *This is Alpha Software* These instructions assume that you know how to work with rails and are familiar with Hydra
 
+h3. What you will need to do
+
 You will *definitely* need to override the edit form.
 You will need to set BatchUpdatesController.type -- currently only allows updating _one_ type of content
 You will probably need to override BatchUpdatesController#update 
 You might need to override BatchUpdatesController#edit
 
-Extend Hydra::BatchUpdatesController update and/or edit methods
+h3. Extend Hydra::BatchUpdatesController update and/or edit methods
 
-For example
-app/controllers/batch_updates_controller.rb
+Example app/controllers/batch_updates_controller.rb
+
 <pre>
   class BatchUpdatesController < ApplicationController
     include Hydra::BatchUpdatesBehavior
@@ -73,9 +75,10 @@ app/controllers/batch_updates_controller.rb
   end
 </pre>
 
-Override Edit View
+h3. Override Edit View
 
-app/views/batch_updates/edit.html.erb
+Example app/views/batch_updates/edit.html.erb
+
 <pre>
   <%= form_for MyModel.new, :url=>batch_updates_path, :method=>:put do |f| %>
 

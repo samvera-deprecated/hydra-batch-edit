@@ -1,7 +1,10 @@
-module BatchUpdatesBehavior
+module Hydra::BatchEditBehavior
+  extend ActiveSupport::Concern
   
-  before_filter :filter_docs_with_access!, :only=>[:edit, :update]
-  before_filter :check_for_empty!, :only=>[:edit, :update]
+  included do
+    before_filter :filter_docs_with_access!, :only=>[:edit, :update]
+    before_filter :check_for_empty!, :only=>[:edit, :update]
+  end
 
   
   # fetch the documents that match the ids in the folder

@@ -32,7 +32,7 @@ In your Gemfile, add
 # Call batch_edit_tools view helper in your search result page template.  We recommend putting it in catalog/_sort_and_per_page.html.erb
 # Call batch_edit_continue in the search result page template.  We put it in catalog/index.html
 # Call batch_edit_select(document) [passing in the solr document] on the index partial that's rendered for each search result
-# Add routes for BatchEditController:
+# Add routes to config/routes.rb 
 <pre>
   mount Hydra::BatchEdit::Engine => '/batch'
 </pre>

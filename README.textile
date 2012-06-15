@@ -72,7 +72,7 @@ Example app/controllers/batch_updates_controller.rb
         obj.save
       end
       flash[:notice] = "Batch update complete"
-      session[:batch_document_ids] = []
+      clear_batch!
       redirect_to catalog_index_path
     end
   end

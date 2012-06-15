@@ -1,9 +1,8 @@
-require "hydra-batch-edit/version"
+require "hydra/batch_edit/version"
 
 module Hydra
-  module Batch
-    module Edit
-      # Your code goes here...
+  module BatchEdit
+    class Engine < Rails::Engine
     end
   end
 end

@@ -14,4 +14,8 @@ Gem::Specification.new do |gem|
   gem.name          = "hydra-batch-edit"
   gem.require_paths = ["lib"]
   gem.version       = Hydra::BatchEdit::VERSION
+
+  gem.add_development_dependency 'rake'
+  gem.add_development_dependency 'rails'
+  gem.add_development_dependency 'rspec-rails'
 end

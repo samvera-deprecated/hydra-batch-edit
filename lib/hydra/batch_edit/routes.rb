@@ -19,6 +19,7 @@ module Hydra
               put :update
               delete :clear
               put :state
+              put :all
             end
           end
           match 'batch_edits/:id' => 'batch_edits#add', :via=>:put

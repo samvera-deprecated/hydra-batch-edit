@@ -26,4 +26,9 @@ module BatchEditHelper
   def batch_edit_select(document)
     render :partial=>'/batch_edits/add_button', :locals=>{:document=>document}
   end
+
+  # Displays the check all button to select/deselect items for your batch.  Put this in your search result page template.  We put it in catalog/index.html
+  def batch_check_all
+    render :partial=>'/batch_edits/check_all'
+  end
 end

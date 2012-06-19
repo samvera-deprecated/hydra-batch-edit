@@ -2,7 +2,7 @@
 require "bundler/gem_tasks"
 require 'rspec/core/rake_task'
 
-ENV["RAILS_ROOT"] = 'spec/internal'
+ENV["RAILS_ROOT"] ||= 'spec/internal'
 
 desc 'Default: run specs.'
 task :default => :spec
@@ -28,6 +28,9 @@ task :generate do
     `bundle install`
     puts "running generator"
     puts `rails generate test_app`
+
+    puts "running migrations"
+    puts `rake db:migrate db:test:prepare`
     FileUtils.cd('../..')
   end
   puts "Running specs"

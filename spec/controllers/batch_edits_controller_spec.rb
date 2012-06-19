@@ -75,10 +75,12 @@ describe BatchEditsController do
     end
     before do
       controller.stub(:catalog_index_path).and_return('/catalog')
+      request.env["HTTP_REFERER"] = "where_i_came_from"
+      
     end
     it "should complain when none are in the batch " do
       put :update, :multiresimage=>{:titleSet_display=>'My title' } 
-      response.should redirect_to '/catalog'
+      response.should redirect_to 'where_i_came_from'
       flash[:notice].should == "Select something first"
     end
     it "should not update when the user doesn't have permissions" do
@@ -87,7 +89,7 @@ describe BatchEditsController do
       controller.should_receive(:can?).with(:edit, @one.pid).and_return(false)
       controller.should_receive(:can?).with(:edit, @two.pid).and_return(false)
       put :update, :multiresimage=>{:titleSet_display=>'My title' } 
-      response.should redirect_to '/catalog' 
+      response.should redirect_to 'where_i_came_from'
       flash[:notice].should == "You do not have permission to edit the documents: #{@one.pid}, #{@two.pid}"
     end
     describe "when current user has access to the documents" do
@@ -124,5 +126,22 @@ describe BatchEditsController do
     end
   end
 
+  describe "select all" do
+    before do
+      doc1 = stub(:id=>123)
+      doc2 = stub(:id=>456)
+      Hydra::BatchEdit::SearchService.any_instance.should_receive(:last_search_documents).and_return([doc1, doc2])
+      controller.stub(:current_user=>stub(:user_key=>'vanessa'))
+    end
+    it "should add every document in the current resultset to the batch" do
+      put :all
+      response.should redirect_to edit_batch_edits_path
+      session[:batch_document_ids].should == [123, 456]
+    end
+  end
+
+  describe "clear" do
+    it "should clear the batch"
+  end
 
 end

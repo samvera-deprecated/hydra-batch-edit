@@ -67,19 +67,29 @@ module Hydra::BatchEditBehavior
     
   end
 
+  def all 
+    self.batch = Hydra::BatchEdit::SearchService.new(session, current_user.user_key).last_search_documents.map(&:id)
+    redirect_to edit_batch_edits_path
+  end
+
   protected
 
   def batch
     session[:batch_document_ids] ||= []
   end
 
+  def batch=(val)
+    session[:batch_document_ids] = val
+  end
+
+
   def clear_batch!
-    session[:batch_document_ids] = []
+    self.batch = []
   end
 
   def check_for_empty!
     if batch.empty?
-      redirect_to catalog_index_path
+      redirect_to :back
       return false
     end
   end

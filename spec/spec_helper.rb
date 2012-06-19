@@ -7,7 +7,6 @@ require 'rspec/rails'
 require 'hydra-batch-edit'
 
 
-
 RSpec.configure do |config|
   config.use_transactional_fixtures = true
 end

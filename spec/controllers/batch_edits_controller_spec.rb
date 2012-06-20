@@ -98,16 +98,23 @@ describe BatchEditsController do
         @two.save
         put :add, :id =>@one.pid
         put :add, :id => @two.pid
-      end
-      it "should update all the field" do
         controller.should_receive(:can?).with(:edit, @one.pid).and_return(true)
         controller.should_receive(:can?).with(:edit, @two.pid).and_return(true)
         ActiveFedora::Base.should_receive(:find).with( @one.pid, :cast=>true).and_return(@one)
         ActiveFedora::Base.should_receive(:find).with( @two.pid, :cast=>true).and_return(@two)
+      end
+      it "should update all the field" do
         put :update, :sample=>{:titleSet_display=>'My title' } 
         response.should redirect_to '/catalog'
         flash[:notice].should == "Batch update complete"
         Sample.find(@one.pid).titleSet_display.should == "My title"
+      end
+      it "should not update blank values" do
+        @one.titleSet_display = 'Original value'
+        put :update, :sample=>{:titleSet_display=>'' } 
+        response.should redirect_to '/catalog'
+        flash[:notice].should == "Batch update complete"
+        Sample.find(@one.pid).titleSet_display.should == "Original value"
       end
     end
   end

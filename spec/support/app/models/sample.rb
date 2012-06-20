@@ -16,11 +16,10 @@ class Sample
   end
 
   def update_attributes(attributes)
-    metaclass = class << self; self; end
     attributes.each do |k, v|
-      metaclass.send(:define_method, k) do
-        v
-      end
+      instance_variable_set "@#{k.to_s}".to_sym, v
+      
+      self.class.send :attr_accessor, k
     end
   end
 

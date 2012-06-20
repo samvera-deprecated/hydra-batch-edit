@@ -58,7 +58,7 @@ module Hydra::BatchEditBehavior
     batch.each do |doc_id|
       obj = ActiveFedora::Base.find(doc_id, :cast=>true)
       type = obj.class.to_s.underscore.to_sym
-      obj.update_attributes(params[type])
+      obj.update_attributes(params[type].reject{|k, v| v.blank?})
       obj.save
     end
     flash[:notice] = "Batch update complete"

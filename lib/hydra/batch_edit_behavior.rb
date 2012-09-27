@@ -54,6 +54,10 @@ module Hydra::BatchEditBehavior
   def edit
   end
 
+  def after_update
+    redirect_to catalog_index_path
+  end
+
   def update
     batch.each do |doc_id|
       obj = ActiveFedora::Base.find(doc_id, :cast=>true)
@@ -63,8 +67,7 @@ module Hydra::BatchEditBehavior
     end
     flash[:notice] = "Batch update complete"
     clear_batch!
-    redirect_to catalog_index_path
-    
+    after_update 
   end
 
   def all 

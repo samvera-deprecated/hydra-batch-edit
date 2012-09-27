@@ -1,4 +1,11 @@
-#batch-edit {
-  clear: all;
-  display: block;
+.batch-select-all {
+  display: inline;
 }
+.hidden {
+  visibility: hidden;
+
+}
+.batch-tools {
+  display: inline-block;
+}
+

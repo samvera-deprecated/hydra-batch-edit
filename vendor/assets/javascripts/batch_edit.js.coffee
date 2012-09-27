@@ -1,7 +1,7 @@
 $ ->
   $("[data-behavior='batch-tools']").removeClass('hidden')     
 
-  $("[data-behavior='batch-add-button']").bl_checkbox_submit({
+  $("[data-behavior='batch-add-form']").bl_checkbox_submit({
           checked_label: "Selected",
           unchecked_label: "Select",
           css_class: "batch_toggle"
@@ -12,11 +12,13 @@ $ ->
       obj.find('a i').addClass('icon-ok')
       $("[data-behavior='batch-edit']").removeClass('hidden')
       $("[data-behavior='batch-add-button']").removeClass('hidden')
+      $("[data-behavior='batch-select-all']").removeClass('hidden')
 
     deactivate = ->
       obj.find('a i').removeClass('icon-ok')
       $("[data-behavior='batch-edit']").addClass('hidden')
       $("[data-behavior='batch-add-button']").addClass('hidden')
+      $("[data-behavior='batch-select-all']").addClass('hidden')
 
     if obj.attr("data-state") == 'off'
       deactivate(obj)

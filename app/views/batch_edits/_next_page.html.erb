@@ -1,1 +1,2 @@
-<%= button_to "Update Selected", edit_batch_edits_path, :method=>:get, :class=>"btn btn-primary hidden", 'data-behavior'=>'batch-edit', :id=>'batch-edit' %>
+<% label = "Update Selected" if label.blank? %>
+<%= button_to label, edit_batch_edits_path, :method=>:get, :class=>"btn btn-primary hidden", 'data-behavior'=>'batch-edit', :id=>'batch-edit' %>

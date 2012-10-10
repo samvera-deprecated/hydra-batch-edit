@@ -62,13 +62,13 @@ module Hydra
 
     #called before the save of the document on update to do addition processes on the document beyond update_attributes
     def update_document(obj)
+        type = obj.class.to_s.underscore.to_sym
+        obj.update_attributes(params[type].reject{|k, v| v.blank?})
     end
 
     def update
       batch.each do |doc_id|
         obj = ActiveFedora::Base.find(doc_id, :cast=>true)
-        type = obj.class.to_s.underscore.to_sym
-        obj.update_attributes(params[type].reject{|k, v| v.blank?})
         update_document(obj)
         obj.save
       end

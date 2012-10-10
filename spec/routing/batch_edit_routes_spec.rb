@@ -10,6 +10,9 @@ describe "Routes for batch_update" do
   it "should route update" do 
     { :put => batch_edits_path }.should route_to( :controller => "batch_edits", :action => "update")
   end
+  it "should route delete batch" do 
+    { :delete => batch_edits_path }.should route_to( :controller => "batch_edits", :action => "destroy_collection")
+  end
   it "should route add" do 
     { :put => '/batch_edits/7'}.should route_to( :controller => "batch_edits", :action => "add", :id=>'7')
   end

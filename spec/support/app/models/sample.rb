@@ -30,4 +30,8 @@ class Sample
   def pid
     @pid
   end
+  
+  def destroy
+    self.class.objects.delete(@pid)
+  end
 end

@@ -15,6 +15,7 @@ module Hydra
               delete :destroy
             end
             collection do
+              match 'destroy' => 'batch_edits#destroy_collection', :via=>:delete
               get :edit
               put :update
               delete :clear

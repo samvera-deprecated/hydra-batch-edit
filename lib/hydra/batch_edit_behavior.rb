@@ -97,6 +97,10 @@ module Hydra
         after_destroy_collection    
     end 
 
+    def check_for_empty?
+      return batch.empty?
+    end
+
     protected
 
     def batch

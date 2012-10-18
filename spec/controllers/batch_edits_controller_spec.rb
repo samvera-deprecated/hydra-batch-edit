@@ -56,6 +56,14 @@ describe BatchEditsController do
     xhr :put, :add, :id => "77826928"
     flash[:notice].should == nil
   end
+  
+  it "should check for empty" do
+    put :add, :id =>"77826928"
+    put :add, :id => "94120425"
+    controller.check_for_empty?.should == false
+    put :clear
+    controller.check_for_empty?.should == true
+  end
 
   describe "edit" do
     before do

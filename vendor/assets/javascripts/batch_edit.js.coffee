@@ -1,11 +1,15 @@
 $ ->
   $("[data-behavior='batch-tools']").removeClass('hidden')     
 
-  $("[data-behavior='batch-add-form']").bl_checkbox_submit({
+  window.batch_edits_options = {}  if typeof window.batch_edits_options is "undefined"
+  default_options = 
           checked_label: "Selected",
           unchecked_label: "Select",
-          css_class: "batch_toggle"
-      })
+          css_class: "batch_toggle"      
+
+  options = $.extend({}, default_options, window.batch_edits_options)
+      
+  $("[data-behavior='batch-add-form']").bl_checkbox_submit(options)
 
   setState = (obj) ->
     activate = ->
@@ -84,7 +88,7 @@ $ ->
     checkbox = $(this)
     form = $(checkbox.parent()[0])
     label = $(checkbox.parent().children("label")[0])
-    label.text("Saving").attr "disabled", "disabled"
+    label.text(options.progress_label).attr "disabled", "disabled"
     checkbox.attr "disabled", "disabled"
     ajaxManager.addReq
       queue: "add_doc"
@@ -118,7 +122,7 @@ $ ->
     label.toggleClass "checked", state
     if state
       form.find("input[name=_method]").val "delete"
-      label.text ""
+      label.text options.progress_label
     else
       form.find("input[name=_method]").val "put"
-      label.text ""
+      label.text options.progress_label

@@ -204,6 +204,11 @@ describe BatchEditsController do
       response.should redirect_to edit_batch_edits_path
       session[:batch_document_ids].should == [123, 456]
     end
+    it "ajax should add every document in the current resultset to the batch but not redirect" do
+      xhr :put, :all
+      response.should_not redirect_to edit_batch_edits_path
+      session[:batch_document_ids].should == [123, 456]
+    end
   end
 
   describe "clear" do

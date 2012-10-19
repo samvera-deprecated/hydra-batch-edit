@@ -79,7 +79,10 @@ module Hydra
 
     def all 
       self.batch = Hydra::BatchEdit::SearchService.new(session, current_user.user_key).last_search_documents.map(&:id)
-      redirect_to edit_batch_edits_path
+      respond_to do |format|
+        format.html { redirect_to edit_batch_edits_path }
+        format.js { render :json => batch }
+      end
     end
     
     #pulled out to allow a user to override the default redirect

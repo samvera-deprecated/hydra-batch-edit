@@ -20,7 +20,9 @@ module Hydra
 
     # add a document_id to the batch. :id of action is solr doc id 
     def add
-      batch << params[:id] 
+      id = params[:id]
+      raise "Too many items in batch!" if ((batch.to_s.length+id.to_s.length) > 2200) # we are going to overflow our cookie
+      batch << id if ! batch.include? id 
       respond_to do |format|
         format.html do
           redirect_to :back, :notice =>  "#{params[:title] || "Item"} successfully added to batch"

@@ -17,8 +17,8 @@ module BatchEditHelper
   end
   
   # Displays the button that users click when they are done selecting items for a batch.  Put this in your search result page template.  We put it in catalog/index.html
-  def batch_edit_continue 
-    render :partial => '/batch_edits/next_page' 
+  def batch_edit_continue(label = 'Update Selected') 
+    render :partial => '/batch_edits/next_page', :locals=>{:label=>label} 
   end
 
   # Displays the button to select/deselect items for your batch.  Call this in the index partial that's rendered for each search result.
@@ -28,7 +28,12 @@ module BatchEditHelper
   end
 
   # Displays the check all button to select/deselect items for your batch.  Put this in your search result page template.  We put it in catalog/index.html
-  def batch_check_all
-    render :partial=>'/batch_edits/check_all'
+  def batch_check_all(label = 'Use all results')
+    render :partial=>'/batch_edits/check_all', :locals=>{:label=>label}
+  end
+
+  # Displays the button that users click when they are done selecting items for a batch to Remove those items from the repository.  Put this in your search result page template.  We put it in catalog/index.html
+  def batch_edit_delete_batch(label = 'Delete Selected', confirm = 'Are you sure?') 
+    render :partial => '/batch_edits/delete_batch', :locals=>{:label=>label, :confirm=>confirm} 
   end
 end

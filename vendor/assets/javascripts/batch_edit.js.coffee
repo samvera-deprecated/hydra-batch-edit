@@ -97,7 +97,7 @@ $ ->
       type: form.attr("method").toUpperCase()
       data: form.serialize()
       error: ->
-        alert "Error"
+        alert "Error  Too Many results Selected"
         update_state_for checked, checkbox, label, form
         label.removeAttr "disabled"
         checkbox.removeAttr "disabled"

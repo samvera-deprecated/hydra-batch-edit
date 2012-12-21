@@ -1,5 +1,8 @@
-$ ->
-  $("[data-behavior='batch-tools']").removeClass('hidden')
+$ = jQuery
+
+$.fn.batchEdit = (args) ->
+  $elem = this
+  $("[data-behavior='batch-tools']", $elem).removeClass('hidden')
 
   window.batch_edits_options = {}  if typeof window.batch_edits_options is "undefined"
   default_options =
@@ -9,7 +12,7 @@ $ ->
 
   options = $.extend({}, default_options, window.batch_edits_options)
       
-  $("[data-behavior='batch-add-form']").bl_checkbox_submit(options)
+  $("[data-behavior='batch-add-form']", $elem).bl_checkbox_submit(options)
 
   setState = (obj) ->
     activate = ->
@@ -37,9 +40,9 @@ $ ->
     setState(obj)
 
   #set initial state
-  setState($("[data-behavior='batch-edit-activate']"))
+  setState($("[data-behavior='batch-edit-activate']", $elem))
 
-  $("[data-behavior='batch-edit-activate']").click (e) ->
+  $("[data-behavior='batch-edit-activate']", $elem).click (e) ->
     e.preventDefault()
     toggleState($(this))
     $.ajax({
@@ -83,12 +86,13 @@ $ ->
   ajaxManager.run()
 
   #override the default blacklight checkbox behavior to queue ajax calls
-  $("input[type='checkbox'].batch_toggle").click ->
+  $("input[type='checkbox']." + default_options.css_class, $elem).click ->
     checked = not this["checked"]
     checkbox = $(this)
     form = $(checkbox.closest('form')[0])
     label = $('label[for="'+$(this).attr('id')+'"]')
-    label.text(options.progress_label).attr "disabled", "disabled"
+    label.attr "disabled", "disabled"
+    $('span', label).text(options.progress_label)
     checkbox.attr "disabled", "disabled"
     ajaxManager.addReq
       queue: "add_doc"
@@ -103,8 +107,10 @@ $ ->
         checkbox.removeAttr "disabled"
   
       success: (data, status, xhr) ->
+        console.log "got status"
         unless xhr.status is 0
           checked = not checked
+          console.log "Updating state2"
           update_state_for checked, checkbox, label, form
           label.removeAttr "disabled"
           checkbox.removeAttr "disabled"
@@ -118,11 +124,12 @@ $ ->
   
   # complete the override by overriding update_state_for  
   update_state_for = (state, checkbox, label, form) ->
+    console.log "in update state ", state
     checkbox.attr "checked", state
     label.toggleClass "checked", state
     if state
       form.find("input[name=_method]").val "delete"
-      label.text options.progress_label
+      $('span', label).text(options.progress_label)
     else
       form.find("input[name=_method]").val "put"
-      label.text options.progress_label
+      $('span', label).text(options.progress_label)

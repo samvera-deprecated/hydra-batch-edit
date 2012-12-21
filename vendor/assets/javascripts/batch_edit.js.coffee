@@ -1,11 +1,11 @@
 $ ->
-  $("[data-behavior='batch-tools']").removeClass('hidden')     
+  $("[data-behavior='batch-tools']").removeClass('hidden')
 
   window.batch_edits_options = {}  if typeof window.batch_edits_options is "undefined"
-  default_options = 
+  default_options =
           checked_label: "Selected",
           unchecked_label: "Select",
-          css_class: "batch_toggle"      
+          css_class: "batch_toggle"
 
   options = $.extend({}, default_options, window.batch_edits_options)
       
@@ -46,7 +46,7 @@ $ ->
       type: 'POST',
       url: '/batch_edits/state',
       data: {_method:'PUT', state: $(this).attr('data-state')},
-    });
+    })
     # TODO check-all
 
   # ajax manager to queue ajax calls so all adds or removes are done in sequence
@@ -86,8 +86,8 @@ $ ->
   $("input[type='checkbox'].batch_toggle").click ->
     checked = not this["checked"]
     checkbox = $(this)
-    form = $(checkbox.parent()[0])
-    label = $(checkbox.parent().children("label")[0])
+    form = $(checkbox.closest('form')[0])
+    label = $('label[for="'+$(this).attr('id')+'"]')
     label.text(options.progress_label).attr "disabled", "disabled"
     checkbox.attr "disabled", "disabled"
     ajaxManager.addReq

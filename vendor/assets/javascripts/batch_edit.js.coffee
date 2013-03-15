@@ -11,8 +11,84 @@ $.fn.batchEdit = (args) ->
           css_class: "batch_toggle"
 
   options = $.extend({}, default_options, window.batch_edits_options)
+
+  # complete the override by overriding update_state_for  
+  update_state_for = (check, state, label, form) ->
+    check.prop "checked", state
+    label.toggleClass "checked", state
+
+    if state
+      form.find("input[name=_method]").val "delete"
+      $('span', label).text(options.progress_label)
+    else
+      form.find("input[name=_method]").val "put"
+      $('span', label).text(options.progress_label)
       
-  $("[data-behavior='batch-add-form']", $elem).bl_checkbox_submit(options)
+  for obj in $("[data-behavior='batch-add-form']", $elem)
+    form = $(obj)
+    form.children().hide()
+    # We're going to use the existing form to actually send our add/removes
+    # This works conveneintly because the exact same action href is used
+    # for both bookmarks/$doc_id.  But let's take out the irrelevant parts
+    # of the form to avoid any future confusion. 
+    form.find("input[type=submit]").remove()
+    form.addClass('form-inline')
+          
+    # View needs to set data-doc-id so we know a unique value
+    # for making DOM id
+    unique_id = form.attr("data-doc-id") || Math.random()
+    # if form is currently using method delete to change state, 
+    # then checkbox is currently checked
+    checked = (form.find("input[name=_method][value=delete]").size() != 0)
+        
+    checkbox = $('<input type="checkbox">')
+      .addClass( options.css_class )
+      .attr("id", options.css_class + "_" + unique_id)
+    label = $('<label>')
+      .addClass( options.css_class )
+      .addClass('checkbox')
+      .attr("for", options.css_class + '_' + unique_id)
+      .attr("title", form.attr("title") || "")
+    span = $('<span>')
+
+    label.append(checkbox)
+    label.append(" ")
+    label.append(span)
+    update_state_for(checkbox, checked, label, form)
+    form.append(label)
+
+    # TODO make this into a new method
+    checkbox.bind 'click', ->
+      cb = $(this)
+      chkd = not cb.is(":checked")
+      form = $(cb.closest('form')[0])
+      label = $('label[for="'+$(this).attr('id')+'"]')
+      label.attr "disabled", "disabled"
+      $('span', label).text(options.progress_label)
+      cb.attr "disabled", "disabled"
+      ajaxManager.addReq
+        queue: "add_doc"
+        url: form.attr("action")
+        dataType: "json"
+        type: form.attr("method").toUpperCase()
+        data: form.serialize()
+        error: ->
+          alert "Error  Too Many results Selected"
+          update_state_for cb, chkd, label, form
+          label.removeAttr "disabled"
+          checkbox.removeAttr "disabled"
+    
+        success: (data, status, xhr) ->
+          unless xhr.status is 0
+            chkd = not chkd
+          else
+            alert "Error Too Many results Selected"
+          update_state_for cb, chkd, label, form
+          label.removeAttr "disabled"
+          cb.removeAttr "disabled"
+
+      false
+    
 
   setState = (obj) ->
     activate = ->
@@ -85,51 +161,3 @@ $.fn.batchEdit = (args) ->
   
   ajaxManager.run()
 
-  #override the default blacklight checkbox behavior to queue ajax calls
-  $("input[type='checkbox']." + default_options.css_class, $elem).click ->
-    checked = not this["checked"]
-    checkbox = $(this)
-    form = $(checkbox.closest('form')[0])
-    label = $('label[for="'+$(this).attr('id')+'"]')
-    label.attr "disabled", "disabled"
-    $('span', label).text(options.progress_label)
-    checkbox.attr "disabled", "disabled"
-    ajaxManager.addReq
-      queue: "add_doc"
-      url: form.attr("action")
-      dataType: "json"
-      type: form.attr("method").toUpperCase()
-      data: form.serialize()
-      error: ->
-        alert "Error  Too Many results Selected"
-        update_state_for checked, checkbox, label, form
-        label.removeAttr "disabled"
-        checkbox.removeAttr "disabled"
-  
-      success: (data, status, xhr) ->
-        console.log "got status"
-        unless xhr.status is 0
-          checked = not checked
-          console.log "Updating state2"
-          update_state_for checked, checkbox, label, form
-          label.removeAttr "disabled"
-          checkbox.removeAttr "disabled"
-        else
-          alert "Error Too Many results Selected"
-          update_state_for checked, checkbox, label, form
-          label.removeAttr "disabled"
-          checkbox.removeAttr "disabled"
-  
-    false
-  
-  # complete the override by overriding update_state_for  
-  update_state_for = (state, checkbox, label, form) ->
-    console.log "in update state ", state
-    checkbox.attr "checked", state
-    label.toggleClass "checked", state
-    if state
-      form.find("input[name=_method]").val "delete"
-      $('span', label).text(options.progress_label)
-    else
-      form.find("input[name=_method]").val "put"
-      $('span', label).text(options.progress_label)

@@ -16,4 +16,12 @@ class TestAppGenerator < Rails::Generators::Base
     copy_file "app/models/solr_document.rb"
     copy_file "db/migrate/20111101221803_create_searches.rb"
   end
+
+  def copy_rspec_rake_task
+    copy_file "lib/tasks/rspec.rake"
+  end
+
+  def copy_hydra_config
+    copy_file "config/initializers/hydra_config.rb"
+  end
 end

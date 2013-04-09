@@ -15,13 +15,9 @@ describe Hydra::BatchEdit::SearchService do
 
   describe 'apply_gated_search' do
     before(:each) do
-      RoleMapper = mock()
       RoleMapper.stub(:roles).with(@login).and_return(['umg/test.group.1'])
       params = @service.apply_gated_search({}, {})
       @group_query = params[:fq].first.split(' OR ')[1]
-    end
-    after(:each) do
-      Object.send(:remove_const, :RoleMapper)
     end
     it "should escape slashes in groups" do
       @group_query.should == 'edit_access_group_ssim:umg\/test.group.1'
@@ -31,7 +27,7 @@ describe Hydra::BatchEdit::SearchService do
         module BatchEdit
           class SearchService
             def solr_access_control_suffix(key)
-              "#{key}_dtsim"
+              "edit_#{key}_customfield"
             end
           end
         end
@@ -39,7 +35,7 @@ describe Hydra::BatchEdit::SearchService do
       @service = Hydra::BatchEdit::SearchService.new({}, '')
       params = @service.apply_gated_search({}, {})
       @public_query = params[:fq].first.split(' OR ')[0]
-      @public_query.should == 'edit_access_group_dtsim:public'
+      @public_query.should == 'edit_group_customfield:public'
     end
   end
 end

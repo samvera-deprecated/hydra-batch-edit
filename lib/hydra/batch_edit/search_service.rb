@@ -28,16 +28,16 @@ module Hydra
 
         # Grant access to public content
         user_access_filters = []
-        user_access_filters << "#{solr_access_control_suffix('edit_access_group')}:public"
+        user_access_filters << "#{solr_access_control_suffix(:group)}:public"
 
         # Grant access based on user id & role
         unless @user_key.blank?
           # for roles
           ::RoleMapper.roles(@user_key).each do |role|
-            user_access_filters << "#{solr_access_control_suffix('edit_access_group')}:#{escape_slashes(role)}"
+            user_access_filters << "#{solr_access_control_suffix(:group)}:#{escape_slashes(role)}"
           end
           # for individual person access
-          user_access_filters << "#{solr_access_control_suffix('edit_access_person')}:#{escape_slashes(@user_key)}"
+          user_access_filters << "#{solr_access_control_suffix(:individual)}:#{escape_slashes(@user_key)}"
         end
         solr_parameters[:fq] << user_access_filters.join(' OR ')
         solr_parameters
@@ -47,8 +47,10 @@ module Hydra
         value.gsub('/', '\/')
       end
 
+      # @param [Symbol] key The permission type to return.  Must be `:group` or `:individual`
       def solr_access_control_suffix(key)
-        "#{key}_ssim"
+        raise ArgumentError, "you must provide :group or :individual" unless [:group, :individual].include?(key)
+        Hydra.config[:permissions][:edit][key]
       end
     end
   end

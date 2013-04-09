@@ -1,11 +1,6 @@
 require 'spec_helper'
 
 describe BatchEditsController do
-  before :all do
-    module ActiveFedora
-      module Base; end
-    end
-  end
   before(:each) do
     request.env["HTTP_REFERER"] = "/"
   end

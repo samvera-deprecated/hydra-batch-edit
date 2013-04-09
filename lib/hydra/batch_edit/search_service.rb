@@ -35,14 +35,18 @@ module Hydra
         unless @user_key.nil?
           # for roles
           ::RoleMapper.roles(@user_key).each_with_index do |role, i|
-            user_access_filters << "edit_access_group_t:#{role}"
+            user_access_filters << escape_filter("edit_access_group_t", role)
           end
           # for individual person access
-          user_access_filters << "edit_access_person_t:#{@user_key}"        
+          user_access_filters << escape_filter("edit_access_person_t", @user_key)
         end
         solr_parameters[:fq] << user_access_filters.join(" OR ")
         logger.debug("Solr parameters: #{ solr_parameters.inspect }")
     end
+
+      def escape_filter(key, value)
+        [key, value.gsub('/', '\/')].join(':')
+      end
 
     end
   end

@@ -1,5 +1,10 @@
 *.gem
 Gemfile.lock
+.rvmrc
+.ruby-version
+.ruby-gemset
+ruby-version
+ruby-gemset
 *.rbc
 .bundle
 .config

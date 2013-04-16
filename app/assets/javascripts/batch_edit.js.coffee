@@ -57,6 +57,9 @@ $.fn.batchEdit = (args) ->
     update_state_for(checkbox, checked, label, form)
     form.append(label)
 
+    #allow the user to bind some actions to the check box after it has been updated
+    args.afterCheckboxUpdate(checkbox)  if args.afterCheckboxUpdate
+
     # TODO make this into a new method
     checkbox.bind 'click', ->
       cb = $(this)

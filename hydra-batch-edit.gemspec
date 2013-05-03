@@ -16,6 +16,7 @@ Gem::Specification.new do |gem|
   gem.version       = Hydra::BatchEdit::VERSION
 
   gem.add_dependency 'blacklight'
+  gem.add_dependency 'hydra-collections'
 
   gem.add_development_dependency 'rake'
   gem.add_development_dependency 'rails'

@@ -21,7 +21,9 @@ The main thrust of the re-usable functionality this gem aims to provide:
 # Before applying the submitted updates, the before_filter in the controller checks (again) that Jackie has edit permissions for everything in the batch
 # The BatchUpdatesController#update method applies Jackie's changes to each of the objects in the batch
 
-*Note* The batches are tracked as a list of pids _in the user session_.  They are not persisted.
+*Note* As of version 1.0.0 The batches are tracke using the batches behavior in hydra-collections.  They are not persisted between page changes and only exist on the current page.
+
+*Note* Version 0.3.1 and previous The batches are tracked as a list of pids _in the user session_.  They are not persisted.
 
 h2. Installing
 
@@ -51,6 +53,7 @@ In your Gemfile, add
 h2. Dependencies
 
 hydra-head
+hydra-collections
 bootstrap
 blacklight.js
 coffeescript & scss
@@ -107,7 +110,8 @@ Example app/views/batch_edit/edit.html.erb
     <%= f.label :access_policy, "Access Policy:"  %>
     <%= f.select :access_policy, ... %>
 
-    <%= f.submit "Save changes", :class=>'btn btn-primary'%>
+    <%# note the class submits-batches causes the batch ids to be returned with the updates %>
+    <%= f.submit "Save changes", :class=>'submits-batches btn btn-primary'%>
 
   <% end %>
 </pre>

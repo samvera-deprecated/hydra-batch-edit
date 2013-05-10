@@ -13,52 +13,6 @@ describe BatchEditsController do
   it "should respond to after_delete" do
     controller.respond_to? "after_delete"
   end
-  it "should add items to list" do
-    @mock_response = mock()
-    @mock_document = mock()
-    @mock_document2 = mock()
-    @mock_document.stub(:export_formats => {})
-    controller.stub(:get_solr_response_for_field_values => [@mock_response, [@mock_document, @mock_document2]])
-
-    put :add, :id =>"77826928"
-    session[:batch_document_ids].length.should == 1
-    put :add, :id => "94120425"
-    session[:batch_document_ids].length.should == 2
-    session[:batch_document_ids].should include("77826928")
-    get :index
-    assigns[:documents].length.should == 2
-    assigns[:documents].first.should == @mock_document
-  end
-  it "should delete an item from list" do
-    put :add, :id =>"77826928"
-    put :add, :id => "94120425"
-    delete :destroy, :id =>"77826928"
-    session[:batch_document_ids].length.should == 1
-    session[:batch_document_ids].should_not include("77826928")
-  end
-  it "should clear list" do
-    put :add, :id =>"77826928"
-    put :add, :id => "94120425"
-    put :clear
-    session[:batch_document_ids].length.should == 0
-  end
-
-  it "should generate flash messages for normal requests" do
-    put :add, :id => "77826928"
-    flash[:notice].length.should_not == 0
-  end
-  it "should clear flash messages after xhr request" do
-    xhr :put, :add, :id => "77826928"
-    flash[:notice].should == nil
-  end
-  
-  it "should check for empty" do
-    put :add, :id =>"77826928"
-    put :add, :id => "94120425"
-    controller.check_for_empty?.should == false
-    put :clear
-    controller.check_for_empty?.should == true
-  end
 
   describe "edit" do
     before do
@@ -68,8 +22,7 @@ describe BatchEditsController do
       @two.save
     end
     it "should draw the form" do
-      put :add, :id =>@one.pid
-      put :add, :id =>@two.pid
+      controller.batch = [@one.pid, @two.pid]
       controller.should_receive(:can?).with(:edit, @one.pid).and_return(true)
       controller.should_receive(:can?).with(:edit, @two.pid).and_return(true)
       get :edit
@@ -95,8 +48,7 @@ describe BatchEditsController do
       flash[:notice].should == "Select something first"
     end
     it "should not update when the user doesn't have permissions" do
-      put :add, :id =>@one.pid
-      put :add, :id => @two.pid
+      controller.batch = [@one.pid, @two.pid]
       controller.should_receive(:can?).with(:edit, @one.pid).and_return(false)
       controller.should_receive(:can?).with(:edit, @two.pid).and_return(false)
       put :update, :multiresimage=>{:titleSet_display=>'My title' } 
@@ -107,8 +59,7 @@ describe BatchEditsController do
       before do
         @one.save
         @two.save
-        put :add, :id =>@one.pid
-        put :add, :id => @two.pid
+        controller.batch = [@one.pid, @two.pid]
         controller.should_receive(:can?).with(:edit, @one.pid).and_return(true)
         controller.should_receive(:can?).with(:edit, @two.pid).and_return(true)
         ActiveFedora::Base.should_receive(:find).with( @one.pid, :cast=>true).and_return(@one)
@@ -145,8 +96,7 @@ describe BatchEditsController do
       flash[:notice].should == "Select something first"
     end
     it "should not update when the user doesn't have permissions" do
-      put :add, :id =>@one.pid
-      put :add, :id => @two.pid
+      controller.batch = [@one.pid, @two.pid]
       controller.should_receive(:can?).with(:edit, @one.pid).and_return(false)
       controller.should_receive(:can?).with(:edit, @two.pid).and_return(false)
       delete :destroy_collection 
@@ -157,8 +107,7 @@ describe BatchEditsController do
       before do
         @one.save
         @two.save
-        put :add, :id =>@one.pid
-        put :add, :id => @two.pid
+        controller.batch = [@one.pid, @two.pid]
         controller.should_receive(:can?).with(:edit, @one.pid).and_return(true)
         controller.should_receive(:can?).with(:edit, @two.pid).and_return(true)
         ActiveFedora::Base.should_receive(:find).with( @one.pid, :cast=>true).and_return(@one)
@@ -197,12 +146,12 @@ describe BatchEditsController do
     it "should add every document in the current resultset to the batch" do
       put :all
       response.should redirect_to edit_batch_edits_path
-      session[:batch_document_ids].should == [123, 456]
+      controller.batch = [123, 456]
     end
     it "ajax should add every document in the current resultset to the batch but not redirect" do
       xhr :put, :all
       response.should_not redirect_to edit_batch_edits_path
-      session[:batch_document_ids].should == [123, 456]
+      controller.batch = [123, 456]
     end
   end
 

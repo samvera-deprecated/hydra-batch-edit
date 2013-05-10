@@ -24,7 +24,7 @@ module BatchEditHelper
   # Displays the button to select/deselect items for your batch.  Call this in the index partial that's rendered for each search result.
   # @param [Hash] document the Hash (aka Solr hit) for one Solr document
   def batch_edit_select(document)
-    render :partial=>'/batch_edits/add_button', :locals=>{:document=>document}
+    return button_for_add_to_batch document
   end
 
   # Displays the check all button to select/deselect items for your batch.  Put this in your search result page template.  We put it in catalog/index.html

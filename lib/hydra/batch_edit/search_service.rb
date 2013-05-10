@@ -8,6 +8,10 @@ module Hydra
         @session = session
         @user_key = user_key
         self.class.copy_blacklight_config_from(::CatalogController)
+       end
+
+      def blacklight_solr
+        Blacklight.solr
       end
 
       solr_search_params_logic << :apply_gated_search

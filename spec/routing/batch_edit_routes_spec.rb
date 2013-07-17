@@ -3,6 +3,7 @@ require 'spec_helper'
 describe "Routes for batch_update" do
   it "should route index" do 
     { :get => '/batch_edits' }.should route_to( :controller => "batch_edits", :action => "index")
+    batch_edits_path.should == '/batch_edits'
   end
   it "should route edit" do 
     { :get => edit_batch_edits_path }.should route_to( :controller => "batch_edits", :action => "edit")

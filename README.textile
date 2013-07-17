@@ -65,7 +65,7 @@ h2. Customizing
 
 h3. What you will need to do
 
-You will *definitely* need to override the edit form.
+You will *definitely* need to override the edit form. `app/views/batch_edits/edit.html.erb`
 You will probably need to override BatchEditController#update 
 You might need to override BatchEditController#edit
 
@@ -93,7 +93,7 @@ Example app/controllers/batch_updates_controller.rb
 
 h3. Override Edit View
 
-Example app/views/batch_edit/edit.html.erb
+Example app/views/batch_edits/edit.html.erb
 
 <pre>
   <%= form_for MyModel.new, :url=>batch_edit_path, :method=>:put do |f| %>

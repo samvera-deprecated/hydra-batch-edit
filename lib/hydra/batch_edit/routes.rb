@@ -15,7 +15,7 @@ module Hydra
               delete :destroy
             end
             collection do
-              match 'destroy' => 'batch_edits#destroy_collection', :via=>:delete
+              get :index
               get :edit
               put :update
               delete :clear
@@ -24,6 +24,7 @@ module Hydra
             end
           end
           match 'batch_edits/:id' => 'batch_edits#add', :via=>:put
+          match 'batch_edits' => 'batch_edits#destroy_collection', :via=>:delete
         end
       end
 

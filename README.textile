@@ -1,6 +1,6 @@
 h1. hydra-batch-edit
 
-!https://travis-ci.org/projecthydra/hydra-batch-edit.png!:https://travis-ci.org/projecthydra/hydra-batch-edit
+!https://travis-ci.org/projecthydra/hydra-batch-edit.png!:https://travis-ci.org/projecthydra/hydra-batch-edit !https://badge.fury.io/rb/hydra-batch-edit.png!:http://badge.fury.io/rb/hydra-batch-edit
 
 Batch Editing Functionality for Hydra Heads
 

@@ -1,5 +1,7 @@
 h1. hydra-batch-edit
 
+!https://travis-ci.org/projecthydra/hydra-batch-edit.png!:https://travis-ci.org/projecthydra/hydra-batch-edit
+
 Batch Editing Functionality for Hydra Heads
 
 *This is Alpha Software!*  While working on a specific Hydra Head with specific content & use cases, we added batch editing functionality.  We wrote the code as a separate gem so that others can use this as a starting point, but _you will have to modify the code_ to get this to work.  If other Hydra partners start using the gem, it will become more immediately useful & configurable out of the box.  At that point, someone will delete this message.

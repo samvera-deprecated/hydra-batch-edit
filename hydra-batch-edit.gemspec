@@ -14,6 +14,7 @@ Gem::Specification.new do |gem|
   gem.name          = "hydra-batch-edit"
   gem.require_paths = ["lib"]
   gem.version       = Hydra::BatchEdit::VERSION
+  gem.license       = 'APACHE2'
 
   gem.add_dependency 'blacklight'
   gem.add_dependency 'hydra-collections'

@@ -8,7 +8,9 @@ module Hydra
        Routes.new(router, options).draw
     end
     class Engine < ::Rails::Engine
-        # Make rails look at the vendored assets
+      config.autoload_paths += %W(
+        #{config.root}/app/controllers/concerns
+      )
     end
   end
 end

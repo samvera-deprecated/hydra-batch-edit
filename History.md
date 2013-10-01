@@ -1,3 +1,6 @@
+# 1.1.1 (2013-10-01)
+* 2013-10-01: Removed an unnecessary require [Justin Coyne]
+
 # 1.1.0 (2013-10-01)
 * 2013-10-01: Replaced deprecated `stub()' with `double()' [Justin Coyne]
 * 2013-10-01: Refactor to load modules after engine is initialized (concerns) [Justin Coyne]

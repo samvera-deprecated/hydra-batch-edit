@@ -1,5 +1,3 @@
-require 'hydra/collections'
-
 module Hydra
   module BatchEditBehavior
     extend ActiveSupport::Concern

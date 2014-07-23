@@ -43,6 +43,7 @@ In your Gemfile, add
 # Add javascript to app/assets/javascripts/application.js
 <pre>
   //= require batch_edit
+  //= require hydra/batch_select
 </pre>
 # Add css to app/assets/stylesheets/application.css
 <pre>

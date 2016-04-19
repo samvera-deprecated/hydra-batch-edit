@@ -3,7 +3,7 @@ module Hydra
     extend ActiveSupport::Concern
     
     included do
-      include Hydra::Collections::AcceptsBatches
+      include CurationConcerns::Collections::AcceptsBatches
 
       before_filter :filter_docs_with_access!, :only=>[:edit, :update, :destroy_collection]
       before_filter :check_for_empty!, :only=>[:edit, :update, :destroy_collection]

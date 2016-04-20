@@ -4,9 +4,9 @@ require File.expand_path('../lib/hydra/batch_edit/version', __FILE__)
 Gem::Specification.new do |gem|
   gem.authors       = ["Justin Coyne", "Matt Zumwalt"]
   gem.email         = ["justin.coyne@yourmediashelf.com"]
-  gem.description   = %q{Rails engine to do batch editing with hydra-head}
-  gem.summary       = %q{Rails engine to do batch editing with hydra-head}
-  gem.homepage      = "https://github.com/projecthydra/hydra-batch-edit"
+  gem.description   = %q{Rails engine to do batch editing with curation_concerns}
+  gem.summary       = %q{Rails engine to do batch editing with curation_concerns}
+  gem.homepage      = "https://github.com/projecthydra-labs/hydra-batch-edit"
 
   gem.files         = `git ls-files`.split($\)
   gem.executables   = gem.files.grep(%r{^bin/}).map{ |f| File.basename(f) }

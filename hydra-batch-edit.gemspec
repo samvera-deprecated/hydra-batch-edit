@@ -18,7 +18,7 @@ Gem::Specification.new do |gem|
 
   gem.add_dependency 'rails'
   gem.add_dependency 'blacklight'
-  gem.add_dependency 'curation_concerns'
+  gem.add_dependency 'curation_concerns', '>= 0.12.0.pre2'
 
   gem.add_development_dependency 'rake'
   gem.add_development_dependency 'rspec-rails'

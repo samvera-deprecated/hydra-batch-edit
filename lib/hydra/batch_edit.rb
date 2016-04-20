@@ -1,7 +1,6 @@
 module Hydra
   module BatchEdit
     extend ActiveSupport::Autoload
-    autoload :SearchService
     autoload :Routes
     autoload :Version
     def self.add_routes(router, options = {})

@@ -1,12 +1,15 @@
-$LOAD_PATH.unshift(File.join(File.dirname(__FILE__), '..', 'lib'))
-$LOAD_PATH.unshift(File.dirname(__FILE__))
-ENV["RAILS_ENV"] ||= 'test'
+ENV["environment"] ||= 'test'
+require "bundler/setup"
 
-require File.expand_path("config/environment", ENV['RAILS_ROOT'] || File.expand_path("../internal", __FILE__))
+require 'engine_cart'
+EngineCart.load_application!
+
 require 'rspec/rails'
 require 'hydra-batch-edit'
 
 
 RSpec.configure do |config|
   config.use_transactional_fixtures = true
+
+  config.infer_spec_type_from_file_location!
 end

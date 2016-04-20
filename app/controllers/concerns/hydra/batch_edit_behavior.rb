@@ -44,7 +44,7 @@ module Hydra
     end
 
     def all 
-      self.batch = Hydra::BatchEdit::SearchService.new(session, current_user.user_key).last_search_documents.map(&:id)
+      self.batch = CurationConcerns::Collections::SearchService.new(session, current_user.user_key).last_search_documents.map(&:id)
       respond_to do |format|
         format.html { redirect_to edit_batch_edits_path }
         format.js { render :json => batch }

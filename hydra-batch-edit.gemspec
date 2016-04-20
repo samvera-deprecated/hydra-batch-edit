@@ -4,9 +4,9 @@ require File.expand_path('../lib/hydra/batch_edit/version', __FILE__)
 Gem::Specification.new do |gem|
   gem.authors       = ["Justin Coyne", "Matt Zumwalt"]
   gem.email         = ["justin.coyne@yourmediashelf.com"]
-  gem.description   = %q{Rails engine to do batch editing with hydra-head}
-  gem.summary       = %q{Rails engine to do batch editing with hydra-head}
-  gem.homepage      = "https://github.com/projecthydra/hydra-batch-edit"
+  gem.description   = %q{Rails engine to do batch editing with curation_concerns}
+  gem.summary       = %q{Rails engine to do batch editing with curation_concerns}
+  gem.homepage      = "https://github.com/projecthydra-labs/hydra-batch-edit"
 
   gem.files         = `git ls-files`.split($\)
   gem.executables   = gem.files.grep(%r{^bin/}).map{ |f| File.basename(f) }
@@ -16,10 +16,13 @@ Gem::Specification.new do |gem|
   gem.version       = Hydra::BatchEdit::VERSION
   gem.license       = 'APACHE2'
 
+  gem.add_dependency 'rails'
   gem.add_dependency 'blacklight'
-  gem.add_dependency 'curation_concerns'
+  gem.add_dependency 'curation_concerns', '>= 0.12.0.pre2'
 
   gem.add_development_dependency 'rake'
-  gem.add_development_dependency 'rails'
   gem.add_development_dependency 'rspec-rails'
+  gem.add_development_dependency 'engine_cart', '~> 0.8'
+  gem.add_development_dependency 'rubocop', '~> 0.39'
+  gem.add_development_dependency 'rubocop-rspec'
 end

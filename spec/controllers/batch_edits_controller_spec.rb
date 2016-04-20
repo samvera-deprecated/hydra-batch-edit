@@ -23,10 +23,10 @@ describe BatchEditsController do
     end
     it "should draw the form" do
       controller.batch = [@one.pid, @two.pid]
-      controller.should_receive(:can?).with(:edit, @one.pid).and_return(true)
-      controller.should_receive(:can?).with(:edit, @two.pid).and_return(true)
+      expect(controller).to receive(:can?).with(:edit, @one.pid).and_return(true)
+      expect(controller).to receive(:can?).with(:edit, @two.pid).and_return(true)
       get :edit
-      response.should be_successful
+      expect(response).to be_successful
       
     end
   end
@@ -38,45 +38,45 @@ describe BatchEditsController do
       @two = Sample.create
     end
     before do
-      controller.stub(:catalog_index_path).and_return('/catalog')
+      allow(controller).to receive(:catalog_index_path).and_return('/catalog')
       request.env["HTTP_REFERER"] = "where_i_came_from"
       
     end
     it "should complain when none are in the batch " do
       put :update, :multiresimage=>{:titleSet_display=>'My title' } 
-      response.should redirect_to 'where_i_came_from'
-      flash[:notice].should == "Select something first"
+      expect(response).to redirect_to 'where_i_came_from'
+      expect(flash[:notice]).to eq("Select something first")
     end
     it "should not update when the user doesn't have permissions" do
       controller.batch = [@one.pid, @two.pid]
-      controller.should_receive(:can?).with(:edit, @one.pid).and_return(false)
-      controller.should_receive(:can?).with(:edit, @two.pid).and_return(false)
+      expect(controller).to receive(:can?).with(:edit, @one.pid).and_return(false)
+      expect(controller).to receive(:can?).with(:edit, @two.pid).and_return(false)
       put :update, :multiresimage=>{:titleSet_display=>'My title' } 
-      response.should redirect_to 'where_i_came_from'
-      flash[:notice].should == "You do not have permission to edit the documents: #{@one.pid}, #{@two.pid}"
+      expect(response).to redirect_to 'where_i_came_from'
+      expect(flash[:notice]).to eq("You do not have permission to edit the documents: #{@one.pid}, #{@two.pid}")
     end
     describe "when current user has access to the documents" do
       before do
         @one.save
         @two.save
         controller.batch = [@one.pid, @two.pid]
-        controller.should_receive(:can?).with(:edit, @one.pid).and_return(true)
-        controller.should_receive(:can?).with(:edit, @two.pid).and_return(true)
-        ActiveFedora::Base.should_receive(:find).with( @one.pid, :cast=>true).and_return(@one)
-        ActiveFedora::Base.should_receive(:find).with( @two.pid, :cast=>true).and_return(@two)
+        expect(controller).to receive(:can?).with(:edit, @one.pid).and_return(true)
+        expect(controller).to receive(:can?).with(:edit, @two.pid).and_return(true)
+        expect(ActiveFedora::Base).to receive(:find).with( @one.pid, :cast=>true).and_return(@one)
+        expect(ActiveFedora::Base).to receive(:find).with( @two.pid, :cast=>true).and_return(@two)
       end
       it "should update all the field" do
         put :update, :sample=>{:titleSet_display=>'My title' } 
-        response.should redirect_to '/catalog'
-        flash[:notice].should == "Batch update complete"
-        Sample.find(@one.pid).titleSet_display.should == "My title"
+        expect(response).to redirect_to '/catalog'
+        expect(flash[:notice]).to eq("Batch update complete")
+        expect(Sample.find(@one.pid).titleSet_display).to eq("My title")
       end
       it "should not update blank values" do
         @one.titleSet_display = 'Original value'
         put :update, :sample=>{:titleSet_display=>'' } 
-        response.should redirect_to '/catalog'
-        flash[:notice].should == "Batch update complete"
-        Sample.find(@one.pid).titleSet_display.should == "Original value"
+        expect(response).to redirect_to '/catalog'
+        expect(flash[:notice]).to eq("Batch update complete")
+        expect(Sample.find(@one.pid).titleSet_display).to eq("Original value")
       end
     end
   end
@@ -87,38 +87,38 @@ describe BatchEditsController do
       @two = Sample.create
     end
     before do
-      controller.stub(:catalog_index_path).and_return('/catalog')
+      allow(controller).to receive(:catalog_index_path).and_return('/catalog')
       request.env["HTTP_REFERER"] = "where_i_came_from"      
     end
     it "should complain when none are in the batch " do
       delete :destroy_collection 
-      response.should redirect_to 'where_i_came_from'
-      flash[:notice].should == "Select something first"
+      expect(response).to redirect_to 'where_i_came_from'
+      expect(flash[:notice]).to eq("Select something first")
     end
     it "should not update when the user doesn't have permissions" do
       controller.batch = [@one.pid, @two.pid]
-      controller.should_receive(:can?).with(:edit, @one.pid).and_return(false)
-      controller.should_receive(:can?).with(:edit, @two.pid).and_return(false)
+      expect(controller).to receive(:can?).with(:edit, @one.pid).and_return(false)
+      expect(controller).to receive(:can?).with(:edit, @two.pid).and_return(false)
       delete :destroy_collection 
-      response.should redirect_to 'where_i_came_from'
-      flash[:notice].should == "You do not have permission to edit the documents: #{@one.pid}, #{@two.pid}"
+      expect(response).to redirect_to 'where_i_came_from'
+      expect(flash[:notice]).to eq("You do not have permission to edit the documents: #{@one.pid}, #{@two.pid}")
     end
     describe "when current user has access to the documents" do
       before do
         @one.save
         @two.save
         controller.batch = [@one.pid, @two.pid]
-        controller.should_receive(:can?).with(:edit, @one.pid).and_return(true)
-        controller.should_receive(:can?).with(:edit, @two.pid).and_return(true)
-        ActiveFedora::Base.should_receive(:find).with( @one.pid, :cast=>true).and_return(@one)
-        ActiveFedora::Base.should_receive(:find).with( @two.pid, :cast=>true).and_return(@two)
+        expect(controller).to receive(:can?).with(:edit, @one.pid).and_return(true)
+        expect(controller).to receive(:can?).with(:edit, @two.pid).and_return(true)
+        expect(ActiveFedora::Base).to receive(:find).with( @one.pid, :cast=>true).and_return(@one)
+        expect(ActiveFedora::Base).to receive(:find).with( @two.pid, :cast=>true).and_return(@two)
       end
       it "should update all the field" do
         delete :destroy_collection 
-        response.should redirect_to '/catalog'
-        flash[:notice].should == "Batch delete complete"
-        Sample.find(@one.pid).should be_nil
-        Sample.find(@two.pid).should be_nil
+        expect(response).to redirect_to '/catalog'
+        expect(flash[:notice]).to eq("Batch delete complete")
+        expect(Sample.find(@one.pid)).to be_nil
+        expect(Sample.find(@two.pid)).to be_nil
       end
     end
   end
@@ -126,13 +126,13 @@ describe BatchEditsController do
   describe "state" do
     it "should save state on" do
       xhr :put, :state, :state=>'on'
-      response.should be_successful
-      session[:batch_edit_state].should == 'on'
+      expect(response).to be_successful
+      expect(session[:batch_edit_state]).to eq('on')
     end
     it "should save state off" do
       xhr :put, :state, :state=>'off'
-      response.should be_successful
-      session[:batch_edit_state].should == 'off'
+      expect(response).to be_successful
+      expect(session[:batch_edit_state]).to eq('off')
     end
   end
 
@@ -140,17 +140,17 @@ describe BatchEditsController do
     before do
       doc1 = double(id: 123)
       doc2 = double(id: 456)
-      Hydra::BatchEdit::SearchService.any_instance.should_receive(:last_search_documents).and_return([doc1, doc2])
-      controller.stub(current_user: double(user_key: 'vanessa'))
+      expect_any_instance_of(CurationConcerns::Collections::SearchService).to receive(:last_search_documents).and_return([doc1, doc2])
+      allow(controller).to receive_messages(current_user: double(user_key: 'vanessa'))
     end
     it "should add every document in the current resultset to the batch" do
       put :all
-      response.should redirect_to edit_batch_edits_path
+      expect(response).to redirect_to edit_batch_edits_path
       controller.batch = [123, 456]
     end
     it "ajax should add every document in the current resultset to the batch but not redirect" do
       xhr :put, :all
-      response.should_not redirect_to edit_batch_edits_path
+      expect(response).not_to redirect_to edit_batch_edits_path
       controller.batch = [123, 456]
     end
   end

@@ -43,7 +43,7 @@ In your Gemfile, add
 # Add javascript to app/assets/javascripts/application.js
 <pre>
   //= require batch_edit
-  //= require hydra/batch_select
+  //= require curation_concerns/batch_select
 </pre>
 # Add css to app/assets/stylesheets/application.css
 <pre>
@@ -56,9 +56,9 @@ In your Gemfile, add
 h2. Dependencies
 
 hydra-head
-hydra-collections
+curation_concerns
 bootstrap
-blacklight.js
+blacklight
 coffeescript & scss
 
   

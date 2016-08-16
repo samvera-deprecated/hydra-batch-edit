@@ -43,18 +43,25 @@ describe BatchEditsController do
       
     end
     it "should complain when none are in the batch " do
-      put :update, :multiresimage=>{:titleSet_display=>'My title' } 
+      put :update, :multiresimage=>{:titleSet_display=>'My title' }
       expect(response).to redirect_to 'where_i_came_from'
       expect(flash[:notice]).to eq("Select something first")
     end
-    it "should not update when the user doesn't have permissions" do
-      controller.batch = [@one.pid, @two.pid]
-      expect(controller).to receive(:can?).with(:edit, @one.pid).and_return(false)
-      expect(controller).to receive(:can?).with(:edit, @two.pid).and_return(false)
-      put :update, :multiresimage=>{:titleSet_display=>'My title' } 
-      expect(response).to redirect_to 'where_i_came_from'
-      expect(flash[:notice]).to eq("You do not have permission to edit the documents: #{@one.pid}, #{@two.pid}")
+
+    context "when the user doesn't have permissions" do
+      before do
+        controller.batch = [@one.pid, @two.pid]
+      end
+
+      it "should not update when the user doesn't have permissions" do
+        expect(controller).to receive(:can?).with(:edit, @one.pid).and_return(false)
+        expect(controller).to receive(:can?).with(:edit, @two.pid).and_return(false)
+        put :update, :multiresimage=>{:titleSet_display=>'My title' } 
+        expect(response).to redirect_to 'where_i_came_from'
+        expect(flash[:notice]).to eq("You do not have permission to edit the documents: #{@one.pid}, #{@two.pid}")
+      end
     end
+
     describe "when current user has access to the documents" do
       before do
         @one.save
@@ -95,14 +102,21 @@ describe BatchEditsController do
       expect(response).to redirect_to 'where_i_came_from'
       expect(flash[:notice]).to eq("Select something first")
     end
-    it "should not update when the user doesn't have permissions" do
-      controller.batch = [@one.pid, @two.pid]
-      expect(controller).to receive(:can?).with(:edit, @one.pid).and_return(false)
-      expect(controller).to receive(:can?).with(:edit, @two.pid).and_return(false)
-      delete :destroy_collection 
-      expect(response).to redirect_to 'where_i_came_from'
-      expect(flash[:notice]).to eq("You do not have permission to edit the documents: #{@one.pid}, #{@two.pid}")
+
+    context "when the user doesn't have permissions" do
+      before do
+        controller.batch = [@one.pid, @two.pid]
+      end
+
+      it "does not update" do
+        expect(controller).to receive(:can?).with(:edit, @one.pid).and_return(false)
+        expect(controller).to receive(:can?).with(:edit, @two.pid).and_return(false)
+        delete :destroy_collection 
+        expect(response).to redirect_to 'where_i_came_from'
+        expect(flash[:notice]).to eq("You do not have permission to edit the documents: #{@one.pid}, #{@two.pid}")
+      end
     end
+
     describe "when current user has access to the documents" do
       before do
         @one.save

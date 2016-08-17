@@ -5,8 +5,8 @@ module Hydra
     included do
       include CurationConcerns::Collections::AcceptsBatches
 
-      before_filter :filter_docs_with_access!, :only=>[:edit, :update, :destroy_collection]
-      before_filter :check_for_empty!, :only=>[:edit, :update, :destroy_collection]
+      before_action :filter_docs_with_access!, :only=>[:edit, :update, :destroy_collection]
+      before_action :check_for_empty!, :only=>[:edit, :update, :destroy_collection]
     end
 
     # fetch the documents that match the ids in the folder

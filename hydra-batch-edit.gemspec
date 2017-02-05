@@ -22,7 +22,7 @@ Gem::Specification.new do |gem|
 
   gem.add_development_dependency 'rake'
   gem.add_development_dependency 'rspec-rails'
-  gem.add_development_dependency 'engine_cart', '~> 0.8'
+  gem.add_development_dependency 'engine_cart', '~> 1.0'
   gem.add_development_dependency 'rubocop', '~> 0.39'
   gem.add_development_dependency 'rubocop-rspec'
 end
